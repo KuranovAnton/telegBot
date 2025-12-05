@@ -103,7 +103,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             for cat_key, cat_data in LINKS_DATA.items():
                 message += f"{cat_data['text']}\n"
                 for link in cat_data['links']:
-                    message += f"• [{link['name']}]({link['url'].replace('_', r'\_')})\n"
+                    message += f"• [{link['name']}]({link['url']})\n"
                 message += "\n"
             
             keyboard = [[InlineKeyboardButton("⬅️ Назад", callback_data='back_to_menu')]]
@@ -114,7 +114,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             message = f"{cat_data['text']}\n\n"
             
             for link in cat_data['links']:
-                message += f"• [{link['name']}]({link['url'].replace('_', r'\_')})\n"
+                message += f"• [{link['name']}]({link['url']})\n"
             
             # Кнопки для этой категории
             keyboard = [
@@ -250,7 +250,7 @@ async def links_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     for cat_key, cat_data in LINKS_DATA.items():
         message += f"{cat_data['text']}\n"
         for link in cat_data['links']:
-            message += f"• [{link['name']}]({link['url'].replace('_', r'\_')})\n"
+            message += f"• [{link['name']}]({link['url']})\n"
         message += "\n"
     
     keyboard = [[InlineKeyboardButton("🎛 Открыть меню", callback_data='back_to_menu')]]
