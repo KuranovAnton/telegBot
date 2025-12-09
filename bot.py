@@ -26,29 +26,20 @@ if not BOT_TOKEN:
 
 # Данные с ссылками
 LINKS_DATA = {
-    'main': {
-        'text': '🏠 *Основные ссылки:*',
-        'links': [
-            {'name': '📚 Документация', 'url': 'https://docs.example.com'},
-            {'name': '🌐 Официальный сайт', 'url': 'https://example.com'},
-            {'name': '💬 Техподдержка', 'url': 'https://t.me/support_chat'},
-        ]
-    },
     'social': {
-        'text': '📱 *Социальные сети:*',
+        'text': '📱 *Наши социальные сети:*',
         'links': [
-            {'name': '📺 YouTube', 'url': 'https://youtube.com/example'},
-            {'name': '📷 Instagram', 'url': 'https://instagram.com/example'},
-            {'name': '🐦 Twitter/X', 'url': 'https://twitter.com/example'},
-            {'name': '💼 LinkedIn', 'url': 'https://linkedin.com/company/example'},
+            {'name': '🌐 ВКонтакте', 'url': 'https://vk.com/hotspareparts'},
+            {'name': '📢 Telegram канал', 'url': 'https://t.me/+St3ks8NOuZI4NTRi'},
         ]
     },
-    'resources': {
-        'text': '🛠 *Ресурсы:*',
+    'contacts': {
+        'text': '📞 *Контакты для связи:*\n\n*Телефоны:*',
         'links': [
-            {'name': '🐙 GitHub', 'url': 'https://github.com/example'},
-            {'name': '📦 API Документация', 'url': 'https://api.example.com'},
-            {'name': '📄 Блог', 'url': 'https://blog.example.com'},
+            {'name': '📱 +7 (XXX) XXX-XX-XX', 'url': 'tel:+7XXXXXXXXXX'},  # ВАШ ПЕРВЫЙ НОМЕР
+            {'name': '🌐 Профиль ВКонтакте', 'url': 'https://vk.com/offiser'},  # ВАШ ПРОФИЛЬ ВК
+            {'name': '📱 +7 (901) 140-87-60', 'url': 'tel:+79011408760'},  # ВАШ ВТОРОЙ НОМЕР
+            {'name': '🌐 Профиль ВКонтакте', 'url': 'https://vk.com/offiser'},  # ВАШ ПРОФИЛЬ ВК
         ]
     }
 }
@@ -61,19 +52,15 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Приветственное сообщение
     welcome_text = (
         f"👋 Привет, {user.first_name}!\n\n"
-        "Я бот для быстрого доступа к полезным ссылкам. "
-        "Выбери категорию ниже:"
+        "Я бот для связи с нами. "
+        "Выбери нужный раздел ниже:"
     )
     
     # Создаем клавиатуру с кнопками
     keyboard = [
         [
-            InlineKeyboardButton("🏠 Основные ссылки", callback_data='category_main'),
-            InlineKeyboardButton("📱 Социальные сети", callback_data='category_social')
-        ],
-        [
-            InlineKeyboardButton("🛠 Ресурсы", callback_data='category_resources'),
-            InlineKeyboardButton("📋 Все ссылки", callback_data='category_all')
+            InlineKeyboardButton("📱 Наши соц. сети", callback_data='category_social'),
+            InlineKeyboardButton("📞 Контакты", callback_data='category_contacts')
         ],
         [
             InlineKeyboardButton("ℹ️ Помощь", callback_data='help'),
@@ -138,7 +125,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         # Сначала редактируем текущее сообщение
         await query.edit_message_text(
-            text=f"📤 Открываю ссылки категории...",
+            text=f"📤 Открываю ссылки...",
             parse_mode='Markdown'
         )
         
@@ -162,28 +149,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif query.data == 'back_to_menu':
         # Возвращаемся в главное меню
         user = query.from_user
-        if user.username:
-            user_display = f"@{user.username}"
-        elif user.first_name:
-            user_display = user.first_name
-        else:
-            user_display = f"пользователь {user.id}"
-        
-        welcome_text = (
-            f"👋 Снова привет, {user_display}!\n"
-            f"🆔 ID: {user.id}\n\n"
-            "Выбери категорию:"
-        )
-        welcome_text = f"👋 Снова привет, {user.first_name}!\nВыбери категорию:"
+        welcome_text = f"👋 Снова привет, {user.first_name}!\nВыбери раздел:"
         
         keyboard = [
             [
-                InlineKeyboardButton("🏠 Основные ссылки", callback_data='category_main'),
-                InlineKeyboardButton("📱 Социальные сети", callback_data='category_social')
-            ],
-            [
-                InlineKeyboardButton("🛠 Ресурсы", callback_data='category_resources'),
-                InlineKeyboardButton("📋 Все ссылки", callback_data='category_all')
+                InlineKeyboardButton("📱 Наши соц. сети", callback_data='category_social'),
+                InlineKeyboardButton("📞 Контакты", callback_data='category_contacts')
             ],
             [
                 InlineKeyboardButton("ℹ️ Помощь", callback_data='help'),
@@ -202,13 +173,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif query.data == 'help':
         help_text = (
             "❓ *Помощь по использованию бота:*\n\n"
-            "1. Выберите категорию ссылок\n"
-            "2. Нажмите на кнопку с нужной категорией\n"
-            "3. Получите список ссылок\n"
-            "4. Используйте кнопку 'Открыть все ссылки' для быстрого доступа\n\n"
+            "*Основные разделы:*\n"
+            "• *Наши соц. сети* - ссылки на наши сообщества\n"
+            "• *Контакты* - телефоны и профили для связи\n\n"
             "*Команды:*\n"
             "/start - Перезапустить бота\n"
-            "/links - Получить все ссылки сразу\n"
+            "/contacts - Получить контактную информацию\n"
             "/help - Показать это сообщение\n"
             "/share - Получить ссылку для приглашения друзей"
         )
@@ -232,7 +202,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
         keyboard = [
             [InlineKeyboardButton("📲 Поделиться ссылкой", 
-                                 url=f"https://t.me/share/url?url=https://t.me/{bot_username}&text=Классный бот с полезными ссылками!")],
+                                 url=f"https://t.me/share/url?url=https://t.me/{bot_username}&text=Бот для связи с нами!")],
             [InlineKeyboardButton("⬅️ Назад", callback_data='back_to_menu')]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -243,15 +213,12 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode='Markdown'
         )
 
-async def links_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Команда /links для получения всех ссылок сразу"""
-    message = "🔗 *Все доступные ссылки:*\n\n"
+async def contacts_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Команда /contacts для получения контактной информации"""
+    message = LINKS_DATA['contacts']['text'] + "\n\n"
     
-    for cat_key, cat_data in LINKS_DATA.items():
-        message += f"{cat_data['text']}\n"
-        for link in cat_data['links']:
-            message += f"• [{link['name']}]({link['url']})\n"
-        message += "\n"
+    for link in LINKS_DATA['contacts']['links']:
+        message += f"• [{link['name']}]({link['url']})\n"
     
     keyboard = [[InlineKeyboardButton("🎛 Открыть меню", callback_data='back_to_menu')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -266,10 +233,10 @@ async def links_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Команда /help"""
     help_text = (
-        "🤖 *Бот для полезных ссылок*\n\n"
+        "🤖 *Бот для связи с нами*\n\n"
         "*Доступные команды:*\n"
         "/start - Запустить бота и открыть меню\n"
-        "/links - Получить все ссылки сразу\n"
+        "/contacts - Получить контактную информацию\n"
         "/help - Показать справку\n"
         "/share - Получить ссылку для приглашения\n\n"
         "Просто нажмите /start для начала работы!"
@@ -291,7 +258,7 @@ async def share_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     keyboard = [[
         InlineKeyboardButton("📲 Поделиться в Telegram", 
-                           url=f"https://t.me/share/url?url=https://t.me/{bot_username}&text=Отличный бот с полезными ссылками!")
+                           url=f"https://t.me/share/url?url=https://t.me/{bot_username}&text=Бот для связи с нами!")
     ]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
@@ -316,7 +283,7 @@ def main():
     
     # Добавляем обработчики команд
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("links", links_command))
+    application.add_handler(CommandHandler("contacts", contacts_command))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("share", share_command))
     
